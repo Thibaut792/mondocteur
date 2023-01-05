@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TypeConsultation{% endblock %}
+
+{% block body %}
+    <h1>TypeConsultation</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ type_consultation.id }}</td>
+            </tr>
+            <tr>
+                <th>Libelle</th>
+                <td>{{ type_consultation.libelle }}</td>
+            </tr>
+            <tr>
+                <th>Duree</th>
+                <td>{{ type_consultation.duree }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_type_consultation_index') }}">back to list</a>
+
+    <a href="{{ path('app_type_consultation_edit', {'id': type_consultation.id}) }}">edit</a>
+
+    {{ include('type_consultation/_delete_form.html.twig') }}
+{% endblock %}
