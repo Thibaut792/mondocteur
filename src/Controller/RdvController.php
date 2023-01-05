@@ -52,6 +52,24 @@ class RdvController extends AbstractController
             'form' => $form
         ]);
     }
+    /**
+     * @Route("/supprdv/{id}", name="app_supprdv")
+     */
+    public function supprdv($id, RDVRepository $rdvRepository, ManagerRegistry $doctrine): Response
+    {
+        //On travaille avec rdv donc nous avons besoin de rdvRepository
+        //Nous avons besoin de notre bdd donc doctrine
+        //objets rdv qui retourne le rdv selon l'id
+        $rdv = $rdvRepository->find($id);
+        //Appelle notre manager
+        $entityManager = $doctrine->getManager();
+        //methode remove pour supprimer
+        $entityManager->remove($rdv);
+        //Rafraichir avec flush
+        $entityManager->flush();
+        //redirection avec une autre page
+        return $this->redirectToRoute("app_mesrdv");
+    }
 
     /**
      * @Route("/mesrdv", name="app_mesrdv")

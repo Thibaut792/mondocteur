@@ -14,6 +14,8 @@
         {% for r in rdvs %}
         {% if r.creneau >= now %}
             <li> {{r.creneau | date('d/m/y') }} avec {{r.medecin.nom}} </li>
+            <p><a href="{{ path('app_supprdv',{'id': r.id})}}">Supprimer rdv</a>
+            {# <button type='button' oncclick="supprdv();"> Supprimer un rdv </button> #}
             {% endif %}
         {% endfor %}
     </ul>
