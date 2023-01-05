@@ -39,28 +39,52 @@ class RDVRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return RDV[] Returns an array of RDV objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('r.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    public function findNbRdvInCurrentMonth()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r, COUNT(r.id) as nbrdv')
+            ->Where('MONTH(r.creneau) = MONTH(NOW())')
+            ->andWhere('YEAR(r.creneau) = YEAR(NOW())')
+            ->groupBy('r.medecin')
+            ->orderBy("nbrdv", 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
-//    public function findOneBySomeField($value): ?RDV
-//    {
-//        return $this->createQueryBuilder('r')
-//            ->andWhere('r.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findNbRdvInCurrentMonth2()
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r, COUNT(r.id) as nbrdv')
+            ->Where('MONTH(r.creneau) = MONTH(NOW())')
+            ->andWhere('YEAR(r.creneau) = YEAR(NOW())')
+            ->groupBy('r.medecin')
+            ->orderBy("nbrdv", 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    //    /**
+    //     * @return RDV[] Returns an array of RDV objects
+    //     */
+    //    public function findByExampleField($value): array
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->orderBy('r.id', 'ASC')
+    //            ->setMaxResults(10)
+    //            ->getQuery()
+    //            ->getResult()
+    //        ;
+    //    }
+
+    //    public function findOneBySomeField($value): ?RDV
+    //    {
+    //        return $this->createQueryBuilder('r')
+    //            ->andWhere('r.exampleField = :val')
+    //            ->setParameter('val', $value)
+    //            ->getQuery()
+    //            ->getOneOrNullResult()
+    //        ;
+    //    }
 }

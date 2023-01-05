@@ -15,6 +15,11 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+        dql:
+            string_functions:
+                MONTH: DoctrineExtensions\Query\Mysql\Month
+                YEAR: DoctrineExtensions\Query\Mysql\Year
+                NOW: DoctrineExtensions\Query\Mysql\Now             
 
 when@test:
     doctrine:
@@ -32,6 +37,7 @@ when@prod:
             result_cache_driver:
                 type: pool
                 pool: doctrine.result_cache_pool
+       
 
     framework:
         cache:

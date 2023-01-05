@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Docteur;
 use App\Form\DocteurType;
 use App\Repository\DocteurRepository;
+use App\Repository\RDVRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,10 +22,11 @@ class MedecinController extends AbstractController
     /**
      * @Route("/medecin", name="app_medecin")
      */
-    public function index(DocteurRepository $docteurRepository): Response
+    public function index(DocteurRepository $docteurRepository, RDVRepository $rdvRepository): Response
     {
         $docteurs = $docteurRepository->findAll();
-
+        $nbrdv = $rdvRepository->findNbRdvInCurrentMonth();
+        dd($nbrdv);
         return $this->render('medecin/index.html.twig', [
             'docteurs' => $docteurs,
         ]);
@@ -38,6 +40,7 @@ class MedecinController extends AbstractController
         $docteur = $docteurRepository->find($id);
 
         return $this->render('medecin/view.html.twig', [
+            'medecin_id' => $id,
             'docteur' => $docteur,
         ]);
     }
