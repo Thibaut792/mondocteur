@@ -22,7 +22,7 @@
 
       <h1>Mes rendez vous passé</h1>
     <ul>
-        {% for r in rdvs %}
+       {% for r in rdvs %}
         {% if r.creneau <= now %}
             <li> {{r.creneau | date('d/m/y') }} avec {{r.medecin.nom}} </li>
             {% endif %}

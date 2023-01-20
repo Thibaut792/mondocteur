@@ -53,15 +53,18 @@ class RDVRepository extends ServiceEntityRepository
 
     public function findNbRdvInCurrentMonth2()
     {
-        return $this->createQueryBuilder('r')
-            ->select('r, COUNT(r.id) as nbrdv')
-            ->Where('MONTH(r.creneau) = MONTH(NOW())')
-            ->andWhere('YEAR(r.creneau) = YEAR(NOW())')
-            ->groupBy('r.medecin')
-            ->orderBy("nbrdv", 'DESC')
-            ->getQuery()
-            ->getResult();
+        $entityManager = $this->getEntityManager();
+        $query = $entityManager->createQuery(
+            'SELECT r ,  COUNT(r.id) as nbrdv
+            FROM App\Entity\Rdv r
+            WHERE MONTH(r.creneau) = MONTH(NOW()) and YEAR(r.creneau) = YEAR(NOW())
+            group by r.medecin
+            ORDER BY nbrdv DESC'
+        );
+        // returns an array of Product objects
+        return $query->getResult();
     }
+
 
     //    /**
     //     * @return RDV[] Returns an array of RDV objects

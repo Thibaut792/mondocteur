@@ -27,9 +27,14 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{path('app_medecin')}}">Acceuil</a>
         </li>
-         <li class="nav-item">
+         {# <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{{path('medecin_add')}}">Ajouter Docteur</a>
+        </li> #}
+        {% if is_granted('ROLE_MEDECIN') %}
+         <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="{{path('medecin_add')}}">Ma fiche medecin</a>
         </li>
+        {% endif %}
         {% if app.user is null %}
         <li class="nav-item">
           <a class="nav-link" href="{{path('app_login')}}">Login</a>

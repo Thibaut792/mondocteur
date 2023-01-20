@@ -55,8 +55,12 @@ class Docteur
     private $rDVs;
 
     /**
-     * @ORM\OneToMany(targetEntity=RDV::class, mappedBy="medecin")
+     * @ORM\OneToOne(targetEntity=User::class, inversedBy="docteur", cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
+    private $compteUser;
+
+
 
     public function __construct()
     {
@@ -205,6 +209,18 @@ class Docteur
                 $rDV->setMedecin(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getCompteUser(): ?User
+    {
+        return $this->compteUser;
+    }
+
+    public function setCompteUser(User $compteUser): self
+    {
+        $this->compteUser = $compteUser;
 
         return $this;
     }

@@ -26,7 +26,9 @@ class MedecinController extends AbstractController
     {
         $docteurs = $docteurRepository->findAll();
         $nbrdv = $rdvRepository->findNbRdvInCurrentMonth();
+        $test = $rdvRepository->findNbRdvInCurrentMonth2();
         dd($nbrdv);
+        dd($test);
         return $this->render('medecin/index.html.twig', [
             'docteurs' => $docteurs,
         ]);
@@ -40,18 +42,23 @@ class MedecinController extends AbstractController
         $docteur = $docteurRepository->find($id);
 
         return $this->render('medecin/view.html.twig', [
-            'medecin_id' => $id,
             'docteur' => $docteur,
         ]);
     }
 
     /**
      * @Route("/medecinAdd", name="medecin_add")
-     * @IsGranted("ROLE_USER")
+     * @IsGranted("ROLE_MEDECIN")
      */
     public function add(ManagerRegistry $doctrine, Request $request): Response
     {
-        $docteur = new Docteur();
+        if ($this->getUser()->getDocteur() != null) {
+            //La fiche docteur n'existe pas
+            $docteur = $this->getUser()->getDocteur();
+        } else {
+            //La fiche docteur existe
+            $docteur = new Docteur();
+        }
         $form = $this->createForm(DocteurType::class, $docteur);
 
         $manager = $doctrine->getManager();
@@ -59,6 +66,8 @@ class MedecinController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $docteur = $form->getData();
+            $docteur->setCompteUser($this->getUser());
+
             $manager->persist($docteur);
             $manager->flush();
             return $this->redirectToRoute("app_medecin_view", array("id" => $docteur->getId()));

@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Role\Role;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -22,12 +23,17 @@ class RegistrationFormType extends AbstractType
             ->add('telephone')
             ->add('email')
             ->add('agreeTerms', CheckboxType::class, [
+                //mapped veut dire qu'il ne fai pas référence à une entité
                 'mapped' => false,
                 'constraints' => [
                     new IsTrue([
                         'message' => 'You should agree to our terms.',
                     ]),
                 ],
+            ])
+            ->add('medecin', CheckboxType::class, [
+                'mapped' => false,
+                'required' => 'false',
             ])
             ->add('plainPassword', PasswordType::class, [
                 // instead of being set onto the object directly,
