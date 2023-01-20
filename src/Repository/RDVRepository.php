@@ -64,7 +64,21 @@ class RDVRepository extends ServiceEntityRepository
         // returns an array of Product objects
         return $query->getResult();
     }
-
+    public function findRdvForOneDocteur($docteur)
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r, t, u')
+            ->join('r.typeconsultation', 't')
+            ->join('r.user', 'u')
+            ->Where('MONTH(r.creneau) = MONTH(NOW())')
+            ->andWhere('YEAR(r.creneau) = YEAR(NOW())')
+            ->andWhere('DAY(r.creneau) = DAY(NOW())')
+            ->andWhere('r.medecin = :medecin')
+            ->setParameter(':medecin', $docteur)
+            ->orderBy("r.creneau", 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 
     //    /**
     //     * @return RDV[] Returns an array of RDV objects

@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\RDV;
 use App\Form\RDVType;
+use App\Repository\DocteurRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,6 +25,7 @@ class RdvController extends AbstractController
             'types' => $typeConsult
         ]);
     }
+
 
     /**
      * @Route("/addrdv/{idTypeConsult}", name="app_addrdv")

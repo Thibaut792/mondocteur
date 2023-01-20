@@ -80,4 +80,15 @@ class MedecinController extends AbstractController
             'form' => $form
         ]);
     }
+
+    /**
+     * @Route("/rdvMedecin", name="app_rdvMedecin")
+     * @IsGranted("ROLE_MEDECIN")
+     */
+    public function rdvMedecin(RDVRepository $RdvRepository): Response
+    {
+        $rdvDuJour = $RdvRepository->findRdvForOneDocteur($this->getUser()->getDocteur());
+        dd($rdvDuJour);
+        return $this->render('medecin/rdvMedecin.html.twig');
+    }
 }

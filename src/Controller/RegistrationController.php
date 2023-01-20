@@ -38,7 +38,6 @@ class RegistrationController extends AbstractController
             if ($form->get('medecin')->getData()) {
                 $user->setRoles(['ROLE_MEDECIN']);
             }
-
             //dd($medecin);
             $entityManager->persist($user);
             $entityManager->flush();
