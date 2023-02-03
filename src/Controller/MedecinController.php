@@ -22,13 +22,16 @@ class MedecinController extends AbstractController
     /**
      * @Route("/medecin", name="app_medecin")
      */
-    public function index(DocteurRepository $docteurRepository, RDVRepository $rdvRepository): Response
+    public function index(DocteurRepository $docteurRepository, RDVRepository $rdvRepository, Request $request): Response
     {
         $docteurs = $docteurRepository->findAll();
         $nbrdv = $rdvRepository->findNbRdvInCurrentMonth();
         $test = $rdvRepository->findNbRdvInCurrentMonth2();
-        dd($nbrdv);
-        dd($test);
+        // dd($nbrdv);
+        // dd($test);
+        $session = $request->getSession();
+        $medecinlast = $session->get("medecin-last");
+        dd($medecinlast);
         return $this->render('medecin/index.html.twig', [
             'docteurs' => $docteurs,
         ]);
@@ -37,9 +40,13 @@ class MedecinController extends AbstractController
     /**
      * @Route("/medecin/{id<\d+>}", name="app_medecin_view")
      */
-    public function view(DocteurRepository $docteurRepository, $id): Response
+    public function view(DocteurRepository $docteurRepository, $id, Request $request): Response
     {
         $docteur = $docteurRepository->find($id);
+
+        $session = $request->getSession();
+        $session->set('medecin-last', $id);
+
 
         return $this->render('medecin/view.html.twig', [
             'docteur' => $docteur,
